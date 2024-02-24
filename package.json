@@ -1,0 +1,15 @@
+{
+  "name": "lab6-stweb",
+  "version": "1.0.0",
+  "description": "Grammy Winners 2023-2024",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js"
+  },
+  "author": "Monica Salvatierra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
