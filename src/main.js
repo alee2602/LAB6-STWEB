@@ -50,13 +50,14 @@ app.get('/posts/:id', async (req, res) => {
 // Endpoint para actualizar un post por ID
 app.put('/posts/:id', async (req, res) => {
     try {
-        const { title, category, winner_name, song_album_name, record_label, award_date, image_base64, content } = req.body;
+        const idpost= req.params.id;
+        const newData = req.body;
          // Validación del cuerpo de la solicitud
-        if (!title || !category || !winner_name || !song_album_name || !record_label || !award_date || !image_base64 || !content) {
+        if (!newData) {
             return res.status(400).json({ error: 'Bad Request: Missing data or incorrect format' });
         }
 
-        const result = await updatePost(req.params.id, title, category, winner_name, song_album_name, record_label, award_date, image_base64, content);
+        const result = await updatePost(idpost, newData);
         if (result.affectedRows) {
             const updatedPost = await getPost(req.params.id);
             res.json(updatedPost);

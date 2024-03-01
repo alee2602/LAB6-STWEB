@@ -16,8 +16,8 @@ export async function getPost(id) {
     return rows[0];
 }
 
-export async function updatePost(id, title, category, winner_name, song_album_name, record_label, award_date, image_base64, content) {
-    const [result] = await conn.query('UPDATE blog_posts SET title= ?, category = ?, winner_name = ?, song_album_name = ?, record_label = ?, award_date = ?, image_base64 = ?, content = ? WHERE id = ?', [title, category, winner_name, song_album_name, record_label, award_date, image_base64, content, id]);
+export async function updatePost(id, newData) {
+    const [result] = await conn.query('UPDATE blog_posts SET ? WHERE id = ?', [newData, id]);
     return result;
 }
 
