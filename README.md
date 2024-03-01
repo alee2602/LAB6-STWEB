@@ -30,7 +30,7 @@ Devuelve los detalles de una publicación específica según su ID.
 
 Actualiza los detalles de una publicación específica según su ID. Debe enviar un objeto JSON con los campos que desea actualizar en el cuerpo de la solicitud.
 
-## DELETE/posts/:id
+### DELETE/posts/:id
 
 Elimina una publicación específica según su ID.
 
