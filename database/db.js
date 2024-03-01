@@ -6,8 +6,8 @@ export async function getAllPosts() {
     return rows
 }
 
-export async function createPost(title, category, winner_name, song_album_name, record_label, award_date, image_base64, content) {
-    const [result] = await conn.query('INSERT INTO blog_posts (title, category, winner_name, song_album_name, record_label, award_date, image_base64, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [title, category, winner_name, song_album_name, record_label, award_date, image_base64, content])
+export async function createPost(title, category, winner_name, song_album_name, record_label, award_date, image_url, content) {
+    const [result] = await conn.query('INSERT INTO blog_posts (title, category, winner_name, song_album_name, record_label, award_date, image_url, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [title, category, winner_name, song_album_name, record_label, award_date, image_url, content])
     return result
 }
 

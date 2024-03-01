@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     song_album_name VARCHAR(255) NOT NULL,
     record_label VARCHAR(255),
     award_date DATE NOT NULL,
-    image_base64 TEXT,
+    image_url TEXT,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
