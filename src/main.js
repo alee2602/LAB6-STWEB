@@ -2,8 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import { getAllPosts, createPost, getPost, updatePost, deletePost } from '../database/db.js';
 
-
-
 const app = express()
 const port = 3000
 
@@ -22,18 +20,6 @@ app.get('/posts', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-// Función para descargar una imagen desde un enlace y convertirla a base64
-async function convertImageUrlToBase64(imageUrl) {
-    try {
-        // Realizar la solicitud para obtener la imagen desde la URL
-        const base64Image = await rp.get({ url: imageUrl, encoding: 'base64' });
-        
-        return base64Image;
-    } catch (error) {
-        throw new Error('Error al convertir la imagen a base64: ' + error.message);
-    }
-}
 
 // Endpoint para crear un nuevo post
 app.post('/posts', async (req, res) => {
