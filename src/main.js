@@ -11,6 +11,18 @@ app.use(cors());
 app.use(express.json());
 
 
+/**
+ * @swagger
+ * /posts:
+ *   get:
+ *     summary: Obtiene todos los posts
+ *     responses:
+ *       200:
+ *         description: Lista de posts obtenida correctamente
+ *       500:
+ *         description: Error del servidor
+ */
+
 // Endpoint para obtener todos los posts
 app.get('/posts', async (req, res) => {
     try {
@@ -20,6 +32,43 @@ app.get('/posts', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /posts:
+ *   post:
+ *     summary: Crea un nuevo post
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               winner_name:
+ *                 type: string
+ *               song_album_name:
+ *                 type: string
+ *               record_label:
+ *                 type: string
+ *               award_date:
+ *                 type: string
+ *               image_url:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Post creado correctamente
+ *       400:
+ *         description: Bad Request - Datos faltantes o formato incorrecto
+ *       500:
+ *         description: Error del servidor
+ */
 
 // Endpoint para crear un nuevo post
 app.post('/posts', async (req, res) => {
@@ -36,6 +85,27 @@ app.post('/posts', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /posts/{id}:
+ *   get:
+ *     summary: Obtiene un post por su ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del post a obtener
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Post obtenido correctamente
+ *       404:
+ *         description: Post no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+
 // Endpoint para obtener un post específico por ID
 app.get('/posts/:id', async (req, res) => {
     try {
@@ -45,6 +115,52 @@ app.get('/posts/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   put:
+ *     summary: Actualiza un post por su ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del post a actualizar
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               winner_name:
+ *                 type: string
+ *               song_album_name:
+ *                 type: string
+ *               record_label:
+ *                 type: string
+ *               award_date:
+ *                 type: string
+ *               image_url:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Post actualizado correctamente
+ *       400:
+ *         description: Bad Request - Datos faltantes o formato incorrecto
+ *       404:
+ *         description: Post no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
 
 // Endpoint para actualizar un post por ID
 app.put('/posts/:id', async (req, res) => {
@@ -67,6 +183,27 @@ app.put('/posts/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   delete:
+ *     summary: Elimina un post por su ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del post a eliminar
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Post eliminado correctamente
+ *       404:
+ *         description: Post no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
 
 // Endpoint para eliminar un post por ID
 app.delete('/posts/:id', async (req, res) => {
