@@ -51,7 +51,7 @@ La API solo admite los métodos HTTP GET, POST, PUT y DELETE para el endpoint `/
 - [X] Implementar el mensaje de error 501 cuando se trate de utilizar un método no implementado de HTTP (5 puntos)
 - [X] Implementar estados de error 400 cuando se visite un endpoint no existente, o cuando no se manden datos con el formato incorrecto en el body de los métodos PUT y POST (15 puntos)
 - [ ] Escribir a un archivo de log.txt un detalle de cada endpoint llamado, que incluya la hora a la que fue llamado, el payload con el que se llamó y la respuesta que el endpoint envió (5 puntos)
-- [ ] Utilizar Swagger para crear documentación de sus endpoints (20 puntos)
+- [X] Utilizar Swagger para crear documentación de sus endpoints (20 puntos)
 - [ ] Soportar imágenes en formato base64 en al menos una propiedad de su blog (10 puntos)
 - [X] Implementar soporte para CORS (10 puntos)
 - [X] Entregar un README bien formateado y un commit history ordenado en su repositorio de Git (20 puntos)
