@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+    app:
+        container_name: blog
+        build: ./
+        ports:
+        - "3000:3000"
+        depends_on:
+            - mysql
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: always
+    mysql:
+        image: mysql:latest
+        environment:
+            MYSQL_DATABASE: blog_db
+            MYSQL_USER: grammy_winner
+            MYSQL_PASSWORD: grammys2024
+            MYSQL_ROOT_PASSWORD: grammyroot
+        volumes: 
+            - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        ports:
+            - "33069:3306"

@@ -1,16 +1,16 @@
-FROM ubuntu:latest
-ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
-    apt-get install -y mysql-server
+FROM node:21.6.2
 
-ENV MYSQL_DATABASE=blog_db
-ENV MYSQL_USER=grammy_user
-ENV MYSQL_PASSWORD=grammy_winner
-ENV MYSQL_ROOT_PASSWORD=gramy_nominee
+WORKDIR /app
 
-COPY schema.sql /docker-entrypoint-initdb.d/schema.sql
+# Instalar las dependencias de la aplicación
+COPY package.json ./
 
-EXPOSE 3306
+RUN npm install
 
-CMD ["mysqld"]
+COPY . .
+
+EXPOSE 3000
+
+# Comando para ejecutar la aplicación
+CMD [ "npm", "start" ]
