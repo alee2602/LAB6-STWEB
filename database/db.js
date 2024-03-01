@@ -16,8 +16,8 @@ export async function getPost(id) {
     return rows[0];
 }
 
-export async function updatePost(id, newData) {
-    const [result] = await conn.query('UPDATE blog_posts SET ? WHERE id = ?', [newData, id]);
+export async function updatePost(id, changedData) {
+    const [result] = await conn.query('UPDATE blog_posts SET ? WHERE id = ?', [changedData, id]);
     return result;
 }
 

@@ -51,13 +51,13 @@ app.get('/posts/:id', async (req, res) => {
 app.put('/posts/:id', async (req, res) => {
     try {
         const idpost= req.params.id;
-        const newData = req.body;
+        const changedData = req.body;
          // Validación del cuerpo de la solicitud
-        if (!newData) {
+        if (!changedData) {
             return res.status(400).json({ error: 'Bad Request: Missing data or incorrect format' });
         }
 
-        const result = await updatePost(idpost, newData);
+        const result = await updatePost(idpost, changedData);
         if (result.affectedRows) {
             const updatedPost = await getPost(req.params.id);
             res.json(updatedPost);
