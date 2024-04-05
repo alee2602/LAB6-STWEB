@@ -1,7 +1,7 @@
 
 # LAB6-STWEB/ Blog API
 
-Esta es una API para gestionar publicaciones de un blog. Utiliza Express y MySQL para proporcionar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las publicaciones del blog.
+Esta es una API para gestionar publicaciones de un blog de los ganadores de los premios Grammys en distintas categorias. Utiliza Express y MySQL para proporcionar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las publicaciones del blog.
 
 ## Endpoints
 
