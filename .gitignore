@@ -5,3 +5,5 @@ docker-compose.yml
 .dockerignore
 
 package-lock.json
+
+.env

@@ -3,12 +3,12 @@ import conn from './conn.js'
 
 export async function getAllPosts() {
     const [rows] = await conn.query('SELECT * FROM blog_posts')
-    return rows
+    return rows;
 }
 
 export async function createPost(title, category, winner_name, song_album_name, record_label, award_date, image_url, content) {
     const [result] = await conn.query('INSERT INTO blog_posts (title, category, winner_name, song_album_name, record_label, award_date, image_url, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [title, category, winner_name, song_album_name, record_label, award_date, image_url, content])
-    return result
+    return result;
 }
 
 export async function getPost(id) {
@@ -26,3 +26,7 @@ export async function deletePost(id) {
     return result;
 }
 
+export async function startLogin(username,password) {
+    const [user] = await conn.query('SELECT id, username, name, email FROM users WHERE username = ? AND password = ?', [username, password]);
+    return user[0];
+}

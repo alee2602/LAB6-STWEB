@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { getAllPosts, createPost, getPost, updatePost, deletePost } from '../database/db.js';
+import { getAllPosts, createPost, getPost, updatePost, deletePost, startLogin } from '../database/db.js';
+import { generateToken, isTokenValid} from '../jwt.js';
 
 const app = express()
 const port = 3000
@@ -9,6 +10,34 @@ const port = 3000
 app.use(cors());
 
 app.use(express.json());
+
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await startLogin(username, password);
+
+        if (user) {
+            const token = generateToken(user);
+
+            res.status(200).json({
+                success: true,
+                access_token: token
+            });
+        } else {
+            res.status(401).json({
+                success: false,
+                message: 'Login failed: Incorrect username or password'
+            });
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred during the login process'
+        });
+    }
+});
 
 
 /**
@@ -224,6 +253,13 @@ app.all('/posts*', (req, res, next) => {
     const supportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     if (!supportedMethods.includes(req.method)) {
     return res.status(501).send('Method not implemented');
+    }
+    next();
+});
+
+app.all('/login', (req, res, next) => {
+    if (req.method !== 'POST') {
+        return res.status(501).send('Method not implemented');
     }
     next();
 });
