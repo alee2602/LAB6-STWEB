@@ -30,3 +30,16 @@ export async function startLogin(username,password) {
     const [user] = await conn.query('SELECT id, username, name, email FROM users WHERE username = ? AND password = ?', [username, password]);
     return user[0];
 }
+
+export async function createUser(username, hashedPassword, name, email) {
+    try {
+        const result = await conn.query(
+            'INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)',
+            [username, hashedPassword, name, email]
+        );
+    return { success: true, userId: result.insertId };
+        } catch (error) {
+
+    return { success: false, error: error.message };
+    }
+}

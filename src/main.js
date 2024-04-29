@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { getAllPosts, createPost, getPost, updatePost, deletePost, startLogin } from '../database/db.js';
+import { getAllPosts, createPost, getPost, updatePost, deletePost, startLogin, createUser } from '../database/db.js';
 import { generateToken, isTokenValid} from '../jwt.js';
 
 const app = express()
@@ -36,6 +36,23 @@ app.post('/login', async (req, res) => {
             success: false,
             message: 'An error occurred during the login process'
         });
+    }
+});
+
+
+app.post('/register', async (req, res) => {
+    const { username, password: hashedPassword, name, email } = req.body;
+
+    try {
+    const result = await createUser(username, hashedPassword, name, email);
+    
+    if (result.success) {
+        res.status(201).json({ message: 'User created successfully', userId: result.userId });
+    } else {
+        res.status(500).json({ message: 'Error creating user' });
+    }
+    } catch (error) {
+    res.status(500).json({ message: 'Error creating user', error: error.message });
     }
 });
 
@@ -258,6 +275,13 @@ app.all('/posts*', (req, res, next) => {
 });
 
 app.all('/login', (req, res, next) => {
+    if (req.method !== 'POST') {
+        return res.status(501).send('Method not implemented');
+    }
+    next();
+});
+
+app.all('/register', (req, res, next) => {
     if (req.method !== 'POST') {
         return res.status(501).send('Method not implemented');
     }
