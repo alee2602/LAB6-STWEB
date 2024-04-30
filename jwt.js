@@ -8,9 +8,8 @@ const KEY = process.env.JWT_SECRET
 
 //Genera un web token para un usuario
 const generateToken = (user) => {
-    return jwt.sign(user, KEY, {expiresIn: '10m', algorithm: 'HS256'})
+    return jwt.sign(user, KEY, {expiresIn: '20m', algorithm: 'HS256'})
 }
-
 
 //Verifica si el token generado sique vigente o no 
 const isTokenValid = (token) => {
