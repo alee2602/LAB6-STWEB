@@ -35,11 +35,9 @@ export async function createUser(username, hashedPassword, name, email) {
     try {
         const result = await conn.query(
             'INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)',
-            [username, hashedPassword, name, email]
-        );
+            [username, hashedPassword, name, email]);
     return { success: true, userId: result.insertId };
         } catch (error) {
-
     return { success: false, error: error.message };
     }
 }

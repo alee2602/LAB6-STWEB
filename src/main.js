@@ -118,16 +118,29 @@ app.get('/posts', async (req, res) => {
 
 // Endpoint para crear un nuevo post
 app.post('/posts', async (req, res) => {
-    try {
-        const { title, category, winner_name, song_album_name, record_label, award_date, image_url, content } = req.body;
-        // Validación del cuerpo de la solicitud
-        if (!title || !category || !winner_name || !song_album_name || !record_label || !award_date || !image_url || !content) {
-            return res.status(400).json({ error: 'Bad Request: Missing data or incorrect format' });
+    const { authorization } = req.headers;
+    const access_token = authorization.substring(7);
+    const tokenInfo = isTokenValid(access_token);
+
+    if (tokenInfo) {
+        const { expired } = tokenInfo;
+    
+        if(expired){
+            res.status(400).json({ error: 'Token is expired :( ' });
+    
+        } else{
+        try {
+            const { title, category, winner_name, song_album_name, record_label, award_date, image_url, content } = req.body;
+            // Validación del cuerpo de la solicitud
+            if (!title || !category || !winner_name || !song_album_name || !record_label || !award_date || !image_url || !content) {
+                return res.status(400).json({ error: 'Bad Request: Missing data or incorrect format' });
+            }
+            const result = await createPost(title, category, winner_name, song_album_name, record_label, award_date, image_url, content);
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-        const result = await createPost(title, category, winner_name, song_album_name, record_label, award_date, image_url, content);
-        res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        }
     }
 });
 
@@ -210,24 +223,38 @@ app.get('/posts/:id', async (req, res) => {
 
 // Endpoint para actualizar un post por ID
 app.put('/posts/:id', async (req, res) => {
-    try {
-        const idpost= req.params.id;
-        const changedData = req.body;
-         // Validación del cuerpo de la solicitud
-        if (!changedData) {
-            return res.status(400).json({ error: 'Bad Request: Missing data or incorrect format' });
-        }
+    const { authorization } = req.headers;
+    const access_token = authorization.substring(7);
+    const tokenInfo = isTokenValid(access_token);
 
-        const result = await updatePost(idpost, changedData);
-        if (result.affectedRows) {
-            const updatedPost = await getPost(req.params.id);
-            res.json(updatedPost);
-        } else {
-            res.status(404).send('Post not found');
+    if (tokenInfo) {
+    const { expired } = tokenInfo;
+
+    if(expired){
+        res.status(400).json({ error: 'Token is expired :( ' });
+
+    } else{
+            try {
+                const idpost= req.params.id;
+                const changedData = req.body;
+                // Validación del cuerpo de la solicitud
+                if (!changedData || Object.keys(changedData).length === 0) {
+                    return res.status(401).json({ error: 'Bad Request: Missing data or incorrect format' });
+                }
+
+                const result = await updatePost(idpost, changedData);
+                if (result.affectedRows) {
+                    const updatedPost = await getPost(req.params.id);
+                    res.json(updatedPost);
+                } else {
+                    res.status(404).send('Post not found');
+                }
+                } catch (error) {
+                    console.error(error); 
+                    res.status(500).json({ error: error.message });
+                }
+            }
         }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
 });
 
 /**
@@ -253,15 +280,28 @@ app.put('/posts/:id', async (req, res) => {
 
 // Endpoint para eliminar un post por ID
 app.delete('/posts/:id', async (req, res) => {
-    try {
-        const result = await deletePost(req.params.id);
-        if (result.affectedRows) {
-            res.status(204).end(); 
-        } else {
-            res.status(404).send('Post not found');
+    const { authorization } = req.headers;
+    const access_token = authorization.substring(7);
+    const tokenInfo = isTokenValid(access_token);
+
+    if (tokenInfo) {
+        const { expired } = tokenInfo;
+
+        if(expired){
+            res.status(400).json({ error: 'Token is expired :( ' });
+
+        } else{
+            try {
+                const result = await deletePost(req.params.id);
+                if (result.affectedRows) {
+                    res.status(204).json({});
+                } else {
+                    res.status(404).json({ error: 'Post not found' });
+                }
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
         }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
 });
 
