@@ -12,7 +12,7 @@ const swaggerOptions = {
             description: 'Documentación de la API de mi aplicación',
         },
     },
-    apis: ['./routes/*.js'], // Rutas de tu aplicación que contienen las definiciones de los endpoints
+    apis: ['./routes/*.js'], 
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
