@@ -11,6 +11,43 @@ app.use(cors());
 
 app.use(express.json());
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Logs in a user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Returns a token on successful login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 access_token:
+ *                   type: string
+ *       401:
+ *         description: Login failed due to incorrect username or password
+ *       500:
+ *         description: Server error during login process
+ */
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -39,6 +76,47 @@ app.post('/login', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Registers a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *               - name
+ *               - email
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 userId:
+ *                   type: integer
+ *       500:
+ *         description: Error creating user
+ */
 
 app.post('/register', async (req, res) => {
     const { username, password: hashedPassword, name, email } = req.body;
@@ -167,11 +245,23 @@ app.post('/posts', async (req, res) => {
 
 // Endpoint para obtener un post específico por ID
 app.get('/posts/:id', async (req, res) => {
-    try {
-        const post = await getPost(req.params.id);
-            res.json(post);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    const { authorization } = req.headers;
+    const access_token = authorization.substring(7);
+    const tokenInfo = isTokenValid(access_token);
+    if (tokenInfo) {
+        const { expired } = tokenInfo;
+    
+        if(expired){
+            res.status(400).json({ error: 'Token is expired :( ' });
+    
+        } else{
+            try {
+                const post = await getPost(req.params.id);
+                    res.json(post);
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        }
     }
 });
 
